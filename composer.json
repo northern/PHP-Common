@@ -1,0 +1,18 @@
+{
+    "name": "northern/common",
+    "description": "PHP Helpers.",
+    "license": "gpl",
+    "type": "library",
+    "keywords": [
+        "northern", "common", "helpers"
+    ],
+    "autoload": {
+        "psr-0": { "Northern\\": ["src/", "tests/src/"] }
+    },
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "require-dev": {
+    	"phpunit/phpunit": "3.7.*"
+    }
+}

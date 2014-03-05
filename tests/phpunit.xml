@@ -1,0 +1,6 @@
+<phpunit bootstrap="bootstrap.php" colors="true">
+	<testsuite name="Northern\Common">
+		<directory>./src/Northern/Test/Common/Helper</directory>
+	</testsuite>
+</phpunit>
+
