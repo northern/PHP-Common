@@ -15,6 +15,8 @@ To use `ArrayHelper` you need to import it.
 
     use Northern\Common\Helper\ArrayHelper as Arr;
 
+### get
+
 To get a value from an array use `get`:
 
     $a = array(
@@ -31,6 +33,8 @@ You can specify a default value if the key you're trying to retrieve doesn't exi
     $value = Arr::get( $a, 'baz', NULL );
 
     // $value == NULL
+
+### getPath
 
 You can also specify a path with the `getPath` method:
 
