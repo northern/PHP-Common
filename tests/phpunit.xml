@@ -2,5 +2,11 @@
 	<testsuite name="Northern\Common">
 		<directory>./src/Northern/Test/Common/Helper</directory>
 	</testsuite>
+
+   <filter>
+      <whitelist>
+         <directory>../src</directory>
+      </whitelist>
+   </filter>
 </phpunit>
 
