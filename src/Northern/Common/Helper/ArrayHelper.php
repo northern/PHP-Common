@@ -69,9 +69,9 @@ abstract class ArrayHelper {
 	{
 		$keys = array_keys( $array );
 		
-		if( !empty( $prefix ) )
+		if( ! empty( $prefix ) )
 		{
-			$keys = ArrayHelper::prefix( $keys, $prefix );
+			$keys = self::prefix( $keys, $prefix );
 		}
 		
 		return $keys;
@@ -89,9 +89,9 @@ abstract class ArrayHelper {
 	{
 		$values = array_values( $array );
 		
-		if( !empty( $prefix ) )
+		if( ! empty( $prefix ) )
 		{
-			$values = ArrayHelper::prefix( $values, $prefix );
+			$values = self::prefix( $values, $prefix );
 		}
 		
 		return $values;
@@ -109,6 +109,8 @@ abstract class ArrayHelper {
 		{
 			$value = "{$prefix}{$value}";
 		}
+		
+		return $values;
 	}
 	
 	/**

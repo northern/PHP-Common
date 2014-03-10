@@ -55,7 +55,7 @@ And you can set a default value in case the path you're trying to retrieve doesn
     
     // $value == NULL
     
-If required, you use an alternate delimter:
+If required, you use an alternate delimiter:
 
     $value = Arr::getPath( $a, 'foo/bar/baz', NULL, '/' );
 
@@ -79,7 +79,7 @@ It's also possible to delete a path:
     
 ### isPath
 
-To test is a path exists:
+To test if a path exists:
 
     if( Arr::isPath( $a, 'foo.bar.baz' ) ) {
        // OK

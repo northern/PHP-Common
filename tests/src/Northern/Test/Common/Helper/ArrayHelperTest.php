@@ -9,6 +9,36 @@ class ArrayHelperTest extends \PHPUnit_Framework_TestCase {
 	const VALUE_A = 666;
 	const VALUE_B = 777;
 	const VALUE_C = 888;
+	const VALUE_D = 999;
+	
+	public function testGet()
+	{
+		$data = $this->getTestData();
+		
+		$value = Arr::get( $data, 'fum', NULL );
+		
+		$this->assertTrue( self::VALUE_D === $value );
+	}
+	
+	public function testGetKeys()
+	{
+		$data = $this->getTestData();
+		
+		$keys = Arr::getKeys( $data );
+		
+		$this->assertTrue( $keys[0] === 'fum' );
+		$this->assertTrue( $keys[1] === 'foo' );
+	}
+
+	public function testGetKeysPrefixed()
+	{
+		$data = $this->getTestData();
+		
+		$keys = Arr::getKeys( $data, '$' );
+		
+		$this->assertTrue( $keys[0] === '$fum' );
+		$this->assertTrue( $keys[1] === '$foo' );
+	}
 	
 	public function testGetPath()
 	{
@@ -88,6 +118,7 @@ class ArrayHelperTest extends \PHPUnit_Framework_TestCase {
 	public function getTestData()
 	{
 		$data = array(
+			'fum' => self::VALUE_D,
 			'foo' => array(
 				'bar' => array(
 					'baz' => self::VALUE_A,
