@@ -98,6 +98,19 @@ class ArrayHelperTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals( NULL, $value );
 	}
 	
+	public function testDeleteArrayPathMultiple()
+	{
+		$data = $this->getTestData();
+		
+		Arr::delete( $data, array('foo.bar.baz', 'foo.bar.bob') );
+		
+		$value = Arr::get( $data, 'foo.bar.baz' );
+		$this->assertEquals( NULL, $value );
+
+		$value = Arr::get( $data, 'foo.bar.bob' );
+		$this->assertEquals( NULL, $value );
+	}
+	
 	public function testDeleteArrayPaths()
 	{
 		$data = $this->getTestData();

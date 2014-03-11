@@ -121,51 +121,48 @@ abstract class ArrayHelper {
 	 * Deletes an entry in the an array by specifing its key or path. By default the 
 	 * path delimiter is a . (dot) but the other path separators can be specified.
 	 * 
-	 * @param array  $arr
-	 * @param string $path
-	 * @param string $delimiter
+	 * @param array        $arr
+	 * @param string|array $path
+	 * @param string       $delimiter
 	 */
 	public static function delete( &$arr, $path, $delimiter = '.' )
 	{
-		if( isset( $arr[ $path ] ) )
+		if( is_array( $path ) )
 		{
-			unset( $arr[ $path ] );
+			$paths = $path;
 			
-			return;
-		} 
-		
-		$segments = explode( $delimiter, $path );
-		
-		$lastSegment = end( $segments );
-		$segments = array_slice( $segments , 0, -1 );
-		
-		$cur = &$arr;
-		
-		foreach( $segments as $segment )
-		{
-			if( ! array_key_exists( $segment, $cur ) )
+			foreach( $paths as $path )
 			{
+				static::delete( $arr, $path, $delimiter );
+			}
+		}
+		else
+		{
+			if( isset( $arr[ $path ] ) )
+			{
+				unset( $arr[ $path ] );
+				
 				return;
+			} 
+			
+			$segments = explode( $delimiter, $path );
+			
+			$lastSegment = end( $segments );
+			$segments = array_slice( $segments , 0, -1 );
+			
+			$cur = &$arr;
+			
+			foreach( $segments as $segment )
+			{
+				if( ! array_key_exists( $segment, $cur ) )
+				{
+					return;
+				}
+				
+				$cur = &$cur[ $segment ];
 			}
 			
-			$cur = &$cur[ $segment ];
-		}
-		
-		unset( $cur[ $lastSegment ] );
-	}
-	
-	/**
-	 * Removes an array of unallowed $paths from given $arr.
-	 * 
-	 * @param array  $arr
-	 * @param array  $paths
-	 * @param string $delimiter
-	 */
-	public static function deletePaths( &$arr, $paths, $delimiter = '.' )
-	{
-		foreach( $paths as $path )
-		{
-			static::delete( $arr, $path, $delimiter );
+			unset( $cur[ $lastSegment ] );
 		}
 	}
 	

@@ -48,7 +48,7 @@ To get a nested value from an array you can specify a path:
 
     // $value == 123
     
-If required, you use an alternate the delimiter:
+If required, you can use an alternate delimiter:
 
     $value = Arr::getPath( $a, 'foo/bar/baz', NULL, '/' );
 
@@ -70,6 +70,10 @@ It's also possible to delete a key or path:
 
     Arr::delete( $a, 'foo.bar.baz' );    
     
+Or to delete multiple paths or keys at once:
+
+    Arr::delete( $a, array('fum', 'foo.bar.baz', foo.bar.bob') );
+
 ### exists
 
 To test if a key or path exists use:
