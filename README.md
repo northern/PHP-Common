@@ -82,9 +82,9 @@ If you need to prefix all the values in an array, use `prefix`:
 
     $a = array('1', '2', '3');
    
-    Arr::prefix( $a, '$' );
+    $values = Arr::prefix( $a, '$' );
    
-    // $a = array('$1', '$2', '$3');
+    // $values = array('$1', '$2', '$3');
 
 ### flatten
 

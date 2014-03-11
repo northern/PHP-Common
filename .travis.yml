@@ -1,0 +1,5 @@
+language: php
+php:
+  - 5.2
+install: composer install
+script: vendor/bin/phpunit -c tests/
