@@ -120,7 +120,7 @@ class ArrayHelperTest extends \PHPUnit_Framework_TestCase {
 			'foo.bar.bob',
 		);
 		
-		Arr::deletePaths( $data, $paths );
+		Arr::delete( $data, $paths );
 		
 		$value = Arr::get( $data, 'foo.bar.baz', NULL );
 		$this->assertEquals( NULL, $value );
