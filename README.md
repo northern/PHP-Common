@@ -78,13 +78,13 @@ Or to delete multiple paths or keys at once:
 
 To test if a key or path exists use:
 
-    $value = Arr::isPath( $a, 'foo.bar.baz' ) );
+    $value = Arr::exists( $a, 'foo.bar.baz' ) );
     
     // $value == TRUE
     
 ### prefix
 
-If you need to prefix all the values in an array, use `prefix`:
+If you need to prefix all the values in an array, use the `prefix` method:
 
     $a = array('1', '2', '3');
    
@@ -94,7 +94,7 @@ If you need to prefix all the values in an array, use `prefix`:
 
 ### flatten
 
-Sometimes you need to "flatten" array, ie. glueing it's keys and values together with a symbol:
+Sometimes you need to "flatten" an array, i.e. glueing the keys and values together with a symbol or character:
 
     $a = array('param1' => '123', 'param2' => 'xyz');
     
