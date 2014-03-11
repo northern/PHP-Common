@@ -1,5 +1,7 @@
 # PHP Helpers
 
+[![Build Status](https://travis-ci.org/northern/PHP-Helpers.png?branch=dev-master)](https://travis-ci.org/northern/PHP-Helpers)
+
 To run tests use:
 
     vendor/bin/phpunit -c tests/
