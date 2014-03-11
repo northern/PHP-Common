@@ -23,107 +23,168 @@ namespace Northern\Common\Helper;
 abstract class ArrayHelper {
 
 	/**
-	 * This method will checks for the presence of an attribute in a given string
-	 * and return its value. If the attribute does not exist a default value is
-	 * returned instead.
+	 * Returns the value from an array by specifying its key or path for a
+	 * nested key. By default, the path delimiter is a . (dot) but other path 
+	 * separators can be specified.
 	 * 
-	 * @param  array $array
-	 * @param  string $key
+	 * To return the value of a key:
+	 * 
+	 *    $arr = array('foo' => 'bar');
+	 *    
+	 *    $value = get( $arr, 'foo' );
+	 *    
+	 *    // $value == 'foo'
+	 *    
+	 * To return the value of a nested key:
+	 * 
+	 *    $arr = array('foo' => array('bar', array('baz' => 21) ) );
+	 * 
+	 *    $value = getPath($arr, 'foo.bar.baz');
+	 *    
+	 *    // $value == 21
+	 * 
+	 * @param  array $arr
+	 * @param  string $path
 	 * @param  mixed $default
+	 * @param  string $delimiter
 	 * @return mixed
 	 */
-	static public function get( $array, $key, $default = NULL )
+	public static function get( &$arr, $path, $default = NULL, $delimiter = '.'  )
 	{
-		return ( isset( $array[$key] ) ? $array[ $key ] : $default );
-	}
-	
-	/**
-	 * This method 'flattens' an associative array to a list array. The key/value
-	 * pair of the associative array are combined with $glue.
-	 * 
-	 * @param  array $array
-	 * @param  string $glue
-	 * @return array
-	 */
-	static public function flatten( $array, $glue = '=' )
-	{
-		$list = array();
-		
-		foreach( $array as $key => $value )
+		if( empty( $arr ) )
 		{
-			$list[] = "{$key}{$glue}{$value}";
+			return $default;
 		}
 		
-		return $list;
-	}
-	
-	/**
-	 * This method will return all the keys of a given array and optionally
-	 * prefix each key with a specified prefix.
-	 * 
-	 * @param  array $array
-	 * @param  string $prefix
-	 * @return array
-	 */
-	static public function getKeys( $array, $prefix = NULL )
-	{
-		$keys = array_keys( $array );
-		
-		if( ! empty( $prefix ) )
+		if( isset( $arr[ $path ] ) )
 		{
-			$keys = self::prefix( $keys, $prefix );
+			return $arr[ $path ];
+		} 
+		
+		$segments = explode( $delimiter, $path );
+		
+		$cur = $arr;
+		
+		foreach( $segments as $segment )
+		{
+			if( ! is_array( $cur ) OR ! array_key_exists( $segment, $cur ) )
+			{
+				return $default;
+			}
+			
+			$cur = $cur[ $segment ];
 		}
 		
-		return $keys;
+		return $cur;
 	}
 	
 	/**
-	 * This method will return all values of a given array and optionally prefix
-	 * each value with a specified prefix.
+	 * Sets the value in an array by specifing its key or path. By default the 
+	 * path delimiter is a . (dot) but the other path separators can be specified.
 	 * 
-	 * @param  array $array
-	 * @param  string $prefix
-	 * @return array
+	 *    $arr = array();
+	 * 
+	 *    set($arr, 'foo.bar.bar', 21);
+	 * 
+	 * @param array   $arr
+	 * @param string  $path
+	 * @param mixed   $value
+	 * @param string  $delimiter
 	 */
-	static public function getValues( $array, $prefix = NULL )
+	public static function set( &$arr, $path, $value, $delimiter = '.' )
 	{
-		$values = array_values( $array );
+		$segments = explode( $delimiter, $path );
 		
-		if( ! empty( $prefix ) )
+		if( count( $segments ) === 1 )
 		{
-			$values = self::prefix( $values, $prefix );
+			$arr[ $path ] = $value;
+			
+			return;
 		}
 		
-		return $values;
-	}
-	
-	/**
-	 * This method will prefix all values of a specified array with a given value.
-	 * 
-	 * @param array $values
-	 * @param string $prefix
-	 */
-	static public function prefix( &$values, $prefix )
-	{
-		foreach( $values as &$value )
+		$cur = &$arr;
+		
+		foreach( $segments as $segment )
 		{
-			$value = "{$prefix}{$value}";
+			if( ! array_key_exists( $segment, $cur ) )
+			{
+				$cur[ $segment ] = array();
+			}
+			
+			$cur = &$cur[ $segment ];
 		}
 		
-		return $values;
+		$cur = $value;
 	}
 	
 	/**
-	 * Tests if a path exists in a specified array. If the specified path exists
-	 * this method will return TRUE otherwise FALSE.
+	 * Deletes an entry in the an array by specifing its key or path. By default the 
+	 * path delimiter is a . (dot) but the other path separators can be specified.
+	 * 
+	 * @param array  $arr
+	 * @param string $path
+	 * @param string $delimiter
+	 */
+	public static function delete( &$arr, $path, $delimiter = '.' )
+	{
+		if( isset( $arr[ $path ] ) )
+		{
+			unset( $arr[ $path ] );
+			
+			return;
+		} 
+		
+		$segments = explode( $delimiter, $path );
+		
+		$lastSegment = end( $segments );
+		$segments = array_slice( $segments , 0, -1 );
+		
+		$cur = &$arr;
+		
+		foreach( $segments as $segment )
+		{
+			if( ! array_key_exists( $segment, $cur ) )
+			{
+				return;
+			}
+			
+			$cur = &$cur[ $segment ];
+		}
+		
+		unset( $cur[ $lastSegment ] );
+	}
+	
+	/**
+	 * Removes an array of unallowed $paths from given $arr.
+	 * 
+	 * @param array  $arr
+	 * @param array  $paths
+	 * @param string $delimiter
+	 */
+	public static function deletePaths( &$arr, $paths, $delimiter = '.' )
+	{
+		foreach( $paths as $path )
+		{
+			static::delete( $arr, $path, $delimiter );
+		}
+	}
+	
+	/**
+	 * Tests if a key or path exists in a specified array. If the specified key or
+	 * path exists this method will return TRUE otherwise FALSE.
 	 *
 	 * @param  array  $arr
 	 * @param  string $path
 	 * @param  string $delimiter
 	 * @return boolean
 	 */
-	public static function isPath( array &$arr, $path, $delimiter = '.' )
+	public static function exists( array &$arr, $path, $delimiter = '.' )
 	{
+		if( array_key_exists( $path, $arr ) )
+		{
+			return TRUE;
+		}
+		
 		$segments = explode( $delimiter, $path );
 			
 		$cur = $arr;
@@ -140,127 +201,81 @@ abstract class ArrayHelper {
 	
 		return TRUE;
 	}
-	
+
 	/**
-	 * Returns the value from an array by specifying its path. By default
-	 * the path delimiter is a . (dot) but other path separators can be 
-	 * specified.
+	 * This method will prefix all values of a specified array with a given value.
 	 * 
-	 *    $arr = array('foo' => array('bar', array('x' => 21) ) );
-	 * 
-	 * To return the value of 'x' specify the path:
-	 * 
-	 *    $x = getPath($arr, 'foo.bar.x');
-	 * 
-	 * @param  array $arr
-	 * @param  string $path
-	 * @param  mixed $default
-	 * @param  string $delimiter
-	 * @return mixed
+	 * @param array  $values
+	 * @param string $prefix
 	 */
-	public static function getPath( &$arr, $path, $default = NULL, $delimiter = '.'  )
+	static public function prefix( &$values, $prefix )
 	{
-		if( empty( $arr ) )
+		foreach( $values as &$value )
 		{
-			return $default;
+			$value = "{$prefix}{$value}";
 		}
 		
-		$segments = explode( $delimiter, $path );
-		
-		$cur = $arr;
-		
-		foreach( $segments as $segment )
-		{
-			if( ! is_array( $cur ) OR ! array_key_exists( $segment, $cur ) )
-			{
-				return $default;
-			}
-			
-			$cur = $cur[$segment];
-		}
-		
-		return $cur;
+		return $values;
 	}
 	
 	/**
-	 * Sets the value in an array by specifing its path. By default the path
-	 * delimiter is a . (dot) but the other path separators can be specified.
+	 * This method 'flattens' an associative array to a list array. The key/value
+	 * pair of the associative array are combined with $glue.
 	 * 
-	 * $arr = array();
-	 * setPath($arr, 'foo.bar.x', 21);
-	 * 
-	 * @param array $arr
-	 * @param string $path
-	 * @param mixed $value
-	 * @param string $delimiter
+	 * @param  array  $array
+	 * @param  string $glue
+	 * @return array
 	 */
-	public static function setPath( &$arr, $path, $value, $delimiter = '.', $exceptNull = TRUE )
+	static public function flatten( $arr, $glue = '=' )
 	{
-		if( $value === NULL AND ! $exceptNull )
+		$list = array();
+		
+		foreach( $arr as $key => $value )
 		{
-			return;
+			$list[] = "{$key}{$glue}{$value}";
 		}
 		
-		$segments = explode( $delimiter, $path );
-		
-		$cur = &$arr;
-		
-		foreach( $segments as $segment )
-		{
-			if( ! array_key_exists( $segment, $cur ) )
-			{
-				$cur[$segment] = array();
-			}
-			
-			$cur = &$cur[$segment];
-		}
-		
-		$cur = $value;
+		return $list;
 	}
 	
 	/**
-	 * Deletes an entry in the an array by specifing its path. By default the 
-	 * path delimiter is a . (dot) but the other path separators can be specified.
+	 * This method will return all the keys of a given array and optionally
+	 * prefix each key with a specified prefix.
 	 * 
-	 * @param array $arr
-	 * @param string $path
-	 * @param string $delimiter
+	 * @param  array  $array
+	 * @param  string $prefix
+	 * @return array
 	 */
-	public static function deletePath( &$arr, $path, $delimiter = '.' )
+	static public function keys( $array, $prefix = NULL )
 	{
-		$segments = explode( $delimiter, $path );
+		$keys = array_keys( $array );
 		
-		$lastSegment = end( $segments );
-		$segments = array_slice($segments , 0, -1 );
-		
-		$cur = &$arr;
-		
-		foreach( $segments as $segment )
+		if( ! empty( $prefix ) )
 		{
-			if( ! array_key_exists( $segment, $cur ) )
-			{
-				return;
-			}
-			
-			$cur = &$cur[$segment];
+			$keys = static::prefix( $keys, $prefix );
 		}
 		
-		unset( $cur[ $lastSegment ] );
+		return $keys;
 	}
 	
 	/**
-	 * Removes an array of unallowed $paths from given $arr.
+	 * This method will return all values of a given array and optionally prefix
+	 * each value with a specified prefix.
 	 * 
-	 * @param array $arr
-	 * @param array $paths
-	 * @param string $delimiter
+	 * @param  array $array
+	 * @param  string $prefix
+	 * @return array
 	 */
-	public static function deletePaths( &$arr, $paths, $delimiter = '.' )
+	static public function values( $array, $prefix = NULL )
 	{
-		foreach( $paths as $path )
+		$values = array_values( $array );
+		
+		if( ! empty( $prefix ) )
 		{
-			self::deletePath( $arr, $path, $delimiter );
+			$values = static::prefix( $values, $prefix );
 		}
+		
+		return $values;
 	}
 	
 	/**
@@ -281,31 +296,31 @@ abstract class ArrayHelper {
 	 * @param  mixed $keys
 	 * @return array
 	 */
-	public static function map( $callbacks, $array, $keys = NULL )
+	public static function map( $callbacks, $arr, $keys = NULL )
 	{
-		foreach( $array as $key => $val )
+		foreach( $arr as $key => $val )
 		{
-			if( is_array($val) )
+			if( is_array( $val ) )
 			{
-				$array[$key] = self::map($callbacks, $array[$key]);
+				$arr[ $key ] = static::map( $callbacks, $arr[ $key ] );
 			}
-			elseif( ! is_array($keys) OR in_array($key, $keys) )
+			elseif( ! is_array( $keys ) OR in_array( $key, $keys ) )
 			{
-				if( is_array($callbacks) )
+				if( is_array( $callbacks ) )
 				{
-					foreach( $callbacks as $cb )
+					foreach( $callbacks as $callback )
 					{
-						$array[$key] = call_user_func( $cb, $array[$key] );
+						$arr[ $key ] = call_user_func( $callback, $arr[ $key ] );
 					}
 				}
 				else
 				{
-					$array[$key] = call_user_func( $callbacks, $array[$key] );
+					$arr[ $key ] = call_user_func( $callbacks, $arr[ $key ] );
 				}
 			}
 		}
 	 	
-		return $array;
+		return $arr;
 	}
 
 	/**
@@ -324,9 +339,9 @@ abstract class ArrayHelper {
 		
 		foreach( $map as $keyfrom => $keyto )
 		{
-			if( self::isPath( $values, $keyfrom ) === TRUE OR $createMode === TRUE )
+			if( self::exists( $values, $keyfrom ) === TRUE OR $createMode === TRUE )
 			{
-				self::setPath( $results, $keyto, self::getPath( $values, $keyfrom ) );
+				self::set( $results, $keyto, self::get( $values, $keyfrom ) );
 			}
 		}
 		

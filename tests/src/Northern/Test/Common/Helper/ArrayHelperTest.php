@@ -11,91 +11,218 @@ class ArrayHelperTest extends \PHPUnit_Framework_TestCase {
 	const VALUE_C = 888;
 	const VALUE_D = 999;
 	
-	public function testGet()
+	public function testGetArrayEmpty()
 	{
-		$data = $this->getTestData();
+		$data = array();
 		
-		$value = Arr::get( $data, 'fum', NULL );
-		
-		$this->assertTrue( self::VALUE_D === $value );
+		$value = Arr::get( $data, 'fum' );
+		$this->assertEquals( NULL, $value );
 	}
 	
-	public function testGetKeys()
+	public function testGetArrayKey()
 	{
 		$data = $this->getTestData();
 		
-		$keys = Arr::getKeys( $data );
+		$value = Arr::get( $data, 'fum' );
+		$this->assertEquals( self::VALUE_D, $value );
 		
-		$this->assertTrue( $keys[0] === 'fum' );
-		$this->assertTrue( $keys[1] === 'foo' );
+		$value = Arr::get( $data, 'baz' );
+		$this->assertEquals( NULL, $value );
+		
+		$value = Arr::get( $data, 'baz', 'error' );
+		$this->assertEquals( 'error', $value );
 	}
 
-	public function testGetKeysPrefixed()
+	public function testGetArrayPath()
 	{
 		$data = $this->getTestData();
-		
-		$keys = Arr::getKeys( $data, '$' );
-		
-		$this->assertTrue( $keys[0] === '$fum' );
-		$this->assertTrue( $keys[1] === '$foo' );
-	}
-	
-	public function testGetPath()
-	{
-		$data = $this->getTestData();
-		
-		$value = Arr::getPath( $data, 'foo.bar.baz' );
-		
-		$this->assertTrue( $value === self::VALUE_A );
-		
-		return $data;
-	}
 
-	/**
-	 * @depends testGetPath
-	 */
-	public function testSetPath( $data )
-	{
-		Arr::setPath( $data, 'foo.bar.bat', self::VALUE_B );
+		$value = Arr::get( $data, 'foo.bar.baz' );
+		$this->assertEquals( self::VALUE_A, $value );
 		
-		$value = Arr::getPath( $data, 'foo.bar.bat' );
-		
-		$this->assertTrue( $value === self::VALUE_B );
-		
-		return $data;
+		$value = Arr::get( $data, 'foo.bar.fum' );
+		$this->assertEquals( NULL, $value );
 	}
 	
-	/**
-	 * @depends testSetPath
-	 */
-	public function testDeletePath( $data )
+	public function testGetArrayPathDelimiter()
 	{
-		Arr::deletePath( $data, 'foo.bar.bob' );
+		$data = $this->getTestData();
+
+		$value = Arr::get( $data, 'foo/bar/baz', NULL, '/' );
+		$this->assertEquals( self::VALUE_A, $value );
 		
-		$value = Arr::getPath( $data, 'foo.bar.bob' );
-		
-		$this->assertTrue( empty( $value ) === TRUE );	
-		
-		return $data;
+		$value = Arr::get( $data, 'foo/bar/fum', NULL, '/' );
+		$this->assertEquals( NULL, $value );
 	}
 	
-	/**
-	 * @depends testDeletePath
-	 */
-	public function testDeletePaths( $data )
+	public function testSetArrayKey()
 	{
-		Arr::deletePaths( $data, array('foo.bar.baz', 'foo.bar.bat') );
+		$data = array();
 		
-		$value = Arr::getPath( $data, 'foo.bar.baz' );
+		Arr::set( $data, 'foo', 123 );
+		$this->assertEquals( 123, $data['foo'] );
+	}
+	
+	public function testSetArrayPath()
+	{
+		$data = array();
 		
-		$this->assertTrue( empty( $value ) === TRUE );
-			
-		$value = Arr::getPath( $data, 'foo.bar.bat' );
+		Arr::set( $data, 'foo.bar.baz', 123 );
 		
-		$this->assertTrue( empty( $value ) === TRUE );
+		$value = Arr::get( $data, 'foo.bar.baz' );
+		$this->assertEquals( 123, $value );		
+	}
+	
+	public function testDeleteArrayKey()
+	{
+		$data = $this->getTestData();
+		
+		Arr::delete( $data, 'fum' );
+		
+		$value = Arr::get( $data, 'fum' );
+		$this->assertEquals( NULL, $value );
+	}
+	
+	public function testDeleteArrayPath()
+	{
+		$data = $this->getTestData();
+		
+		Arr::delete( $data, 'foo.bar.baz' );
+		
+		$value = Arr::get( $data, 'foo.bar.baz' );
+		$this->assertEquals( NULL, $value );
+
+		Arr::delete( $data, 'foo.bar.bob' );
+		
+		$value = Arr::get( $data, 'foo.bar.bob' );
+		$this->assertEquals( NULL, $value );
+	}
+	
+	public function testDeleteArrayPaths()
+	{
+		$data = $this->getTestData();
+		
+		$paths = array(
+			'foo.bar.baz',
+			'foo.bar.bob',
+		);
+		
+		Arr::deletePaths( $data, $paths );
+		
+		$value = Arr::get( $data, 'foo.bar.baz', NULL );
+		$this->assertEquals( NULL, $value );
+		
+		$value = Arr::get( $data, 'foo.bar.bob', NULL );
+		$this->assertEquals( NULL, $value );
+	}
+	
+	public function testExistsArrayKey()
+	{
+		$data = $this->getTestData();
+		
+		$value = Arr::exists( $data, 'foo' );
+		$this->assertEquals( TRUE, $value );
+		
+		$value = Arr::exists( $data, 'bar' );
+		$this->assertEquals( FALSE, $value );
+	}
+	
+	public function testExistsArrayPath()
+	{
+		$data = $this->getTestData();
+		
+		$value = Arr::exists( $data, 'foo.bar.baz' );
+		$this->assertEquals( TRUE, $value );
+		
+		$value = Arr::exists( $data, 'foo.bar.fum' );
+		$this->assertEquals( FALSE, $value );
+	}
+	
+	public function testPrefixArray()
+	{
+		$data = array('1', '2', '3');
+		
+		$data = Arr::prefix( $data, '$' );
+		
+		$this->assertEquals( '$1', $data[0] );
+		$this->assertEquals( '$2', $data[1] );
+		$this->assertEquals( '$3', $data[2] );
+	}
+	
+	public function testFlatten()
+	{
+		$data = array('param1' => 'foo', 'param2' => 'bar', 'param3' => 'baz');
+		
+		$values = Arr::flatten( $data );
+		
+		$this->assertEquals( 'param1=foo', $values[0] );		
+		$this->assertEquals( 'param2=bar', $values[1] );		
+		$this->assertEquals( 'param3=baz', $values[2] );		
+	}
+	
+	public function testKeys()
+	{
+		$data = array('param1' => 'foo', 'param2' => 'bar', 'param3' => 'baz');
+		
+		$values = Arr::keys( $data );
+		
+		$this->assertEquals( 'param1', $values[0] );
+		$this->assertEquals( 'param2', $values[1] );
+		$this->assertEquals( 'param3', $values[2] );
+	}
+	
+	public function testKeysWithPrefix()
+	{
+		$data = array('param1' => 'foo', 'param2' => 'bar', 'param3' => 'baz');
+		
+		$values = Arr::keys( $data, '&' );
+		
+		$this->assertEquals( '&param1', $values[0] );
+		$this->assertEquals( '&param2', $values[1] );
+		$this->assertEquals( '&param3', $values[2] );
+	}
+	
+	public function testValues()
+	{
+		$data = array('param1' => 'foo', 'param2' => 'bar', 'param3' => 'baz');
+		
+		$values = Arr::values( $data );
+		
+		$this->assertEquals( 'foo', $values[0] );
+		$this->assertEquals( 'bar', $values[1] );
+		$this->assertEquals( 'baz', $values[2] );
+	}
+	
+	public function testValuesWithPrefix()
+	{
+		$data = array('param1' => 'foo', 'param2' => 'bar', 'param3' => 'baz');
+		
+		$values = Arr::values( $data, '&' );
+		
+		$this->assertEquals( '&foo', $values[0] );
+		$this->assertEquals( '&bar', $values[1] );
+		$this->assertEquals( '&baz', $values[2] );
 	}
 	
 	public function testMap()
+	{
+		$data = array('foo', 'bar' => array('fum', 'bob'), 'baz');
+		
+		$values = Arr::map( 'strtoupper', $data );
+		
+		$this->assertEquals( 'FOO', $values[0] );
+		$this->assertEquals( 'BAZ', $values[1] );
+		
+		$value = Arr::get( $values, 'bar.0');
+		$this->assertEquals( 'FUM', $value );
+		
+		$value = Arr::get( $values, 'bar.1');
+		$this->assertEquals( 'BOB', $value );
+	}
+	
+	
+	
+	public function testRemap()
 	{
 		$data = $this->getTestData();
 		
@@ -106,12 +233,10 @@ class ArrayHelperTest extends \PHPUnit_Framework_TestCase {
 		
 		$data = Arr::remap( $data, $map );
 		
-		$value = Arr::getPath( $data, 'baz.bar.foo' );
-
+		$value = Arr::get( $data, 'baz.bar.foo' );
 		$this->assertTrue( $value === self::VALUE_A );
 		
-		$value = Arr::getPath( $data, 'bob.bar.foo' );
-		
+		$value = Arr::get( $data, 'bob.bar.foo' );
 		$this->assertTrue( $value === self::VALUE_C );
 	}
 	
