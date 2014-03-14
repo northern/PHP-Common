@@ -118,8 +118,25 @@ abstract class ArrayHelper {
 	}
 	
 	/**
+	 * Inserts a new value into a key or path only if the key or path does not yet
+	 * exists.
+	 * 
+	 * @param array  $arr
+	 * @param string $path
+	 * @param mixed  $value
+	 * @param string $delimiter
+	 */
+	public static function insert( &$arr, $path, $value, $delimiter = '.' )
+	{
+		if( ! static::exists( $arr, $path, $delimiter ) )
+		{
+			static::set( $arr, $path, $value, $delimiter );
+		}
+	}
+	
+	/**
 	 * Deletes an entry in the an array by specifing its key or path. By default the 
-	 * path delimiter is a . (dot) but the other path separators can be specified.
+	 * path delimiter is a "." (dot) but the other path separators can be specified.
 	 * 
 	 * @param array        $arr
 	 * @param string|array $path

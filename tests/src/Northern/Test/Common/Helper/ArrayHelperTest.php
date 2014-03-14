@@ -73,6 +73,21 @@ class ArrayHelperTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals( 123, $value );		
 	}
 	
+	public function testInsertArrayPath()
+	{
+		$data = $this->getTestData();
+		
+		Arr::insert( $data, 'foo.bar.baz', self::VALUE_D );
+		
+		$value = Arr::get( $data, 'foo.bar.baz' );
+		$this->assertEquals( self::VALUE_A, $value );
+		
+		Arr::insert( $data, 'foo.bar.new', 'xyz' );
+		
+		$value = Arr::get( $data, 'foo.bar.new' );
+		$this->assertEquals( 'xyz', $value );		
+	}
+	
 	public function testDeleteArrayKey()
 	{
 		$data = $this->getTestData();

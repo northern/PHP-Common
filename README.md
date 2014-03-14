@@ -64,6 +64,18 @@ To set a value or nested value use the `set` method:
     
     // $a = array( 'foo' => array( 'bar' => array( 'baz' => 123 ) ) );
     
+### insert
+
+With `insert` you can create a new value at a path or key, however, the path will only be created if it does not yet exists.
+
+    $a = array();
+    
+    Arr::set( $a, 'foo.bar.baz', 123 );
+    
+    Arr::insert( $a, 'foo.bar.baz', 123 );
+    
+    // The insert statement does nothing.
+    
 ### delete
 
 It's also possible to delete a key or path:
