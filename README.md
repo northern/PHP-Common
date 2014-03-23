@@ -1,6 +1,6 @@
 # PHP Helpers
 
-[![Build Status](https://travis-ci.org/northern/PHP-Helpers.png?branch=dev-master)](https://travis-ci.org/northern/PHP-Common)
+[![Build Status](https://travis-ci.org/northern/PHP-Common.png?branch=dev-master)](https://travis-ci.org/northern/PHP-Common)
 
 To run tests use:
 
