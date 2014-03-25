@@ -106,7 +106,7 @@ abstract class ArrayHelper {
 		
 		foreach( $segments as $segment )
 		{
-			if( ! array_key_exists( $segment, $cur ) )
+			if( is_array( $cur ) AND ! array_key_exists( $segment, $cur ) )
 			{
 				$cur[ $segment ] = array();
 			}
