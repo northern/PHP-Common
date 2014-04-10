@@ -12,6 +12,10 @@ To generate code coverage report use:
 
     vendor/bin/phpunit -c tests/ --coverage-html ./reports
 
+Find PHP Common on Packagist:
+
+https://packagist.org/packages/northern/common
+
 ## ArrayHelper
 
 To use `ArrayHelper` you need to import it.
