@@ -96,6 +96,9 @@ class ArrayHelperTest extends \PHPUnit_Framework_TestCase {
 		
 		$value = Arr::get( $data, 'fum' );
 		$this->assertEquals( NULL, $value );
+		
+		Arr::delete( $data, 'foo.fum' );
+		
 	}
 	
 	public function testDeleteArrayPath()
@@ -248,8 +251,6 @@ class ArrayHelperTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals( 'BOB', $value );
 	}
 	
-	
-	
 	public function testRemap()
 	{
 		$data = $this->getTestData();
@@ -260,6 +261,59 @@ class ArrayHelperTest extends \PHPUnit_Framework_TestCase {
 		);
 		
 		$data = Arr::remap( $data, $map );
+		
+		$value = Arr::get( $data, 'baz.bar.foo' );
+		$this->assertTrue( $value === self::VALUE_A );
+		
+		$value = Arr::get( $data, 'bob.bar.foo' );
+		$this->assertTrue( $value === self::VALUE_C );
+	}
+	
+	public function testRemapCollection()
+	{
+		$collection = array(
+			$this->getTestData(),
+			$this->getTestData(),
+		);
+		
+		$map = array(
+			'foo.bar.baz' => 'baz.bar.foo',
+			'foo.bar.bob' => 'bob.bar.foo',				
+		);
+		
+		$collection = Arr::remapCollection( $collection, $map );
+		
+		foreach( $collection as $data )
+		{
+			$value = Arr::get( $data, 'baz.bar.foo' );
+			$this->assertTrue( $value === self::VALUE_A );
+			
+			$value = Arr::get( $data, 'bob.bar.foo' );
+			$this->assertTrue( $value === self::VALUE_C );
+		}
+	}
+	
+	public function testMerge()
+	{
+		$dataA = $this->getTestData();
+		
+		$map = array(
+			'foo.bar.baz' => 'baz.bar.foo',
+			'foo.bar.bob' => 'bob.bar.foo',				
+		);
+		
+		$dataB = Arr::remap( $dataA, $map );
+		
+		$data = Arr::merge( $dataA, $dataB );
+		
+		$value = Arr::get( $data, 'fum' );
+		$this->assertTrue( $value === self::VALUE_D );
+		
+		$value = Arr::get( $data, 'foo.bar.baz' );
+		$this->assertTrue( $value === self::VALUE_A );
+		
+		$value = Arr::get( $data, 'foo.bar.bob' );
+		$this->assertTrue( $value === self::VALUE_C );
 		
 		$value = Arr::get( $data, 'baz.bar.foo' );
 		$this->assertTrue( $value === self::VALUE_A );
