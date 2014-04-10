@@ -1,6 +1,8 @@
-# PHP Helpers
+# PHP Common
 
 [![Build Status](https://travis-ci.org/northern/PHP-Common.png?branch=dev-master)](https://travis-ci.org/northern/PHP-Common)
+
+PHP Common is a PHP library containing a set of common functionality.
 
 To run tests use:
 
@@ -10,7 +12,7 @@ To generate code coverage report use:
 
     vendor/bin/phpunit -c tests/ --coverage-html ./reports
 
-## How to use
+## ArrayHelper
 
 To use `ArrayHelper` you need to import it.
 
