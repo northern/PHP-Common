@@ -146,5 +146,12 @@ Returns the values of an array in the same way the `array_values` function works
     
     // $values = array( '&123', '&xyz' )
 
+### contains
 
- 
+Tests if the values of one array exist in another. E.g:
+
+    $b = Arr::contains( array('A', 'B'), array('A', 'B', 'C') );
+
+    // $b = TRUE
+
+The above tests if the values of the first array (needle) exist in the second array (haystack), which in the above example is true.

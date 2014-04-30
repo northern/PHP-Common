@@ -409,4 +409,37 @@ abstract class ArrayHelper {
 		return $merged;
 	}
 
+	/**
+	 * This method tests for the existance of $needle in $haystack. If $needle is a
+	 * non-array type this method will function exaclty like the build in PHP in_array
+	 * function, however, if $needle is an array this method will iterate over each
+	 * of the items in the $needle array and checks for the existance of each of the
+	 * values in $haystack.
+	 *
+	 * @param mixed $needle
+	 * @param array $haystack
+	 * @return boolean
+	 */
+	static public function contains( $needle, array $haystack )
+	{
+		if( is_array( $needle ) )
+		{
+			$needles = $needle;
+
+			foreach( $needles as $needle )
+			{
+				if( ! in_array( $needle, $haystack ) )
+				{
+					return FALSE;
+				}
+			}
+
+			return TRUE;
+		}
+		else
+		{
+			return in_array( $needle, $haystack );
+		}
+	}
+
 }
