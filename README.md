@@ -16,6 +16,22 @@ Find PHP Common on Packagist:
 
 https://packagist.org/packages/northern/common
 
+## Table of Contents
+
+  1. [ArrayHelper](#arrayhelper)
+    1. [get](#get)
+    1. [set](#set)
+    1. [insert](#insert)
+    1. [delete](#delete)
+    1. [exists](#exists)
+    1. [prefix](#prefix)
+    1. [flatten](#flatten)
+    1. [keys](#keys)
+    1. [values](#values)
+    1. [contains](#contains)
+  1. [FilterHelper](#filterhelper)
+    1. [Basic usage](#basicusage)
+
 ## ArrayHelper
 
 To use `ArrayHelper` you need to import it.
@@ -155,3 +171,74 @@ Tests if the values of one array exist in another. E.g:
     // $b = TRUE
 
 The above tests if the values of the first array (needle) exist in the second array (haystack), which in the above example is true.
+
+## FilterHelper
+
+To use `FilterHelper` you need to import it.
+
+    use Northern\Common\Helper\FilterHelper;
+
+### Basic usage
+
+The FilterHelper applies filters to values in an array. A basic example:
+
+    $values = array( 'price' => -123.456 );
+
+    $filters = array( 'price' => 'Round' )
+
+    $values = FilterHelper::filter( $values, $filters );
+
+    // $values = array( 'price' => -123 );
+
+If you want to apply multiple filters to a value simply use an array of filters:
+
+    $filters = array( 'price' => array('Round', 'Abs') )
+
+    $values = FilterHelper::filter( $values, $filters );
+
+    // $values = array( 'price' => 123 );
+
+Notice how the price is a round positive number.
+
+Some filters take parameters, such as the MoneyFormat filter. I this case the filter definition needs to be defined as an array itself. E.g:
+
+    $values = array( 'price' => 123.456 );
+
+    $filters = array( 'price' => array( array('MoneyFormat', array('$%i') ) ) );
+
+    $values = FilterHelper::filter( $values, $filters );
+
+    // $values = array( 'price' => '$123.46' );
+
+Note the double `array` around the filter. The first `array` indicates an `array` of filters. We have to do this because the filter we're calling takes arguments on the constructor, i.e. the money format string. As you can see, the second `array` has two indexes. The first index specifies the filter name and the second index represents an `array` of parameters that will be passed into the constructor of the array. Please note that if the filter didn't require any arguments, the double array notation would not be necassery.
+
+With PHP 5.4+ the array notation can be shortened by using the new bracket style definition syntax:
+
+    $filters = [ 'price' => [ ['MoneyFormat', ['$%i'] ] ] ];
+
+It's also possible to apply filters to nested arrays. To specify the filters simply use the `ArrayFilter` nested notation to specify the path. E.g:
+
+    $values = array(
+      'receipt' => array(
+         'total' => 5.4556,
+         'tax'   => .45
+      )
+    );
+
+    $filters = array(
+      'receipt.total' => array( array('MoneyFormat', array('$%i') ) ),
+      'receipt.tax'   => array( array('MoneyFormat', array('$%i') ) )
+    );
+
+## Filters
+
+### BoolFilter
+
+Casts a value to a boolean:
+
+    $values = array( 'myFalse' = "0", 'myTrue' => "1" );
+
+    $filters = array( 'myFalse' => 'Bool', 'myTrue' => 'Bool' );
+
+    // $values = array( 'myFalse' => FALSE, 'myTrue' => TRUE )
+
