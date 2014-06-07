@@ -30,7 +30,11 @@ https://packagist.org/packages/northern/common
     1. [values](#values)
     1. [contains](#contains)
   1. [FilterHelper](#filterhelper)
-    1. [Basic usage](#basicusage)
+    1. [Basic usage](#basic-usage)
+  1. [ExceptionHelper](#exceptionhelper)
+    1. [getFormattedExceptionMessage](#getformattedexceptionmessage)
+    1. [getExceptionNameHierarchy](#getexceptionnamehierarchy)
+    1. [getOriginalExceptionFileAndLineNumber](#getoriginalexceptionfileandlinenumber)
 
 ## ArrayHelper
 
@@ -230,8 +234,6 @@ It's also possible to apply filters to nested arrays. To specify the filters sim
       'receipt.tax'   => array( array('MoneyFormat', array('$%i') ) )
     );
 
-## Filters
-
 ### BoolFilter
 
 Casts a value to a boolean:
@@ -241,4 +243,27 @@ Casts a value to a boolean:
     $filters = array( 'myFalse' => 'Bool', 'myTrue' => 'Bool' );
 
     // $values = array( 'myFalse' => FALSE, 'myTrue' => TRUE )
+
+
+
+## ExceptionHelper
+
+The ExceptionHelper class provides a few useful utilities when it comes to exceptions.
+
+### getFormattedExceptionMessage
+
+This method returns a formatted exception message.
+
+### getExceptionNameHierarchy
+
+This method returns the exception name hierarchy. E.g. it's possible when throwing an exception to pass in the reference to a previous exception that was thrown. This means that the newly thrown exception has a reference to the previous exception thrown and therefore will be able to give more information and context about this exception.
+
+An example of an exception name hierarchy might look something like this:
+
+    PaymentServiceException >> PayPalGatewayDriverException >> GatewayNotFoundException
+
+The above example displays a hierachy of exceptions. Somewhere down in the bowels of a system a `GatewayNotFoundException` was thrown. This exception was caught by some handler and this handler decided that it needed to escalte this exception into a `PayPalGatewayDriverException`. However, the `GatewayNotFoundException` was passed into the `PayPalGatewayDriverException` as the "previous" exception thrown. At an even higher level the `PayPalGatewayDriverException` was caught which was in turn escalated into a `PaymentServiceException`.
+
+### getOriginalExceptionFileAndLineNumber
+
 
