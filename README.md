@@ -6,11 +6,9 @@ PHP Common is a PHP library containing a set of common functionality.
 
 To run tests use:
 
-    vendor/bin/phpunit -c tests/
+    composer install -v
 
-To generate code coverage report use:
-
-    vendor/bin/phpunit -c tests/ --coverage-html ./reports
+    vendor/bin/phpunit
 
 Find PHP Common on Packagist:
 
