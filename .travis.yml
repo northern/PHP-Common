@@ -10,4 +10,4 @@ install: true
 before_script:
   - composer install --dev
 
-script: vendor/bin/phpunit -c tests/
+script: vendor/bin/phpunit

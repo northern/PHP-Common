@@ -322,6 +322,29 @@ class ArrayHelperTest extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue( $value === self::VALUE_C );
 	}
 	
+	public function testContains()
+	{
+		$haystack = array('A', 'B', 'C');
+
+		$value = Arr::contains( 'A', $haystack );
+		$this->assertTrue( $value );
+
+		$value = Arr::contains( array('A'), $haystack );
+		$this->assertTrue( $value );
+
+		$value = Arr::contains( array('A', 'B'), $haystack );
+		$this->assertTrue( $value );
+
+		$value = Arr::contains( array('A', 'B', 'C'), $haystack );
+		$this->assertTrue( $value );
+
+		$value = Arr::contains( 'D', $haystack );
+		$this->assertFalse( $value );
+
+		$value = Arr::contains( array('D'), $haystack );
+		$this->assertFalse( $value );
+	}
+
 	public function getTestData()
 	{
 		$data = array(
