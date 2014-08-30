@@ -42,7 +42,7 @@ class ExceptionHelper {
 		
 		list( $file, $line, $stackTrace ) = static::getOriginalExceptionFileAndLineNumber( $e );
 		
-		$message = "{$name} ({$e->getcode()})\n{$file} {$line}\n{$stackTrace}";
+		$message = "{$name}: {$e->getMessage()} ({$e->getcode()})\n{$file} {$line}\n{$stackTrace}";
 		
 		return $message;
 	}
