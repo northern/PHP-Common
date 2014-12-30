@@ -65,9 +65,9 @@ $a = array();
 Arr::set( $a, 'foo.bar.baz', 123 );
 
 // $a = array( 'foo' => array( 'bar' => array( 'baz' => 123 ) ) );
-
-If the key or path not already exist, it will be created.
 ```    
+If the key or path not already exist, it will be created.
+
 ### insert
 
 With `insert` you can create a new value at a path or key, however, the path will only be created if it does not yet exists.
