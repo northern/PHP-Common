@@ -10,9 +10,7 @@ To run tests use:
 
     vendor/bin/phpunit
 
-Find PHP Common on Packagist:
-
-https://packagist.org/packages/northern/common
+Find PHP Common on [Packagist](https://packagist.org/packages/northern/common):
 
 ## ArrayHelper
 
@@ -68,6 +66,8 @@ Arr::set( $a, 'foo.bar.baz', 123 );
 
 // $a = array( 'foo' => array( 'bar' => array( 'baz' => 123 ) ) );
 ```    
+If the key or path not already exist, it will be created.
+
 ### insert
 
 With `insert` you can create a new value at a path or key, however, the path will only be created if it does not yet exists.
@@ -90,11 +90,15 @@ Or to delete multiple paths or keys at once:
 ```PHP
 Arr::delete( $a, array('fum', 'foo.bar.baz', foo.bar.bob') );
 ```
+Or with an alternate delimiter:
+```PHP
+Arr::delete( $a, array('fum', 'foo/bar/baz', foo/bar/bob'), '/' );
+```
 ### exists
 
 To test if a key or path exists use:
 ```PHP
-$value = Arr::exists( $a, 'foo.bar.baz' ) );
+$value = Arr::exists( $a, 'foo.bar.baz' );
 
 // $value == TRUE
 ```    
