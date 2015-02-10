@@ -382,12 +382,12 @@ abstract class ArrayHelper {
 	}
 	
 	/**
-	 * Recursive merges two arrays together.
+	 * Recursivly merge two arrays together.
 	 * 
 	 * Source: http://au1.php.net/manual/en/function.array-merge-recursive.php#92195
 	 * 
-	 * @param array $array1
-	 * @param array $array2
+	 * @param  array $array1
+	 * @param  array $array2
 	 * @return array
 	 */
 	static public function merge( array $array1, array $array2 )
@@ -416,8 +416,8 @@ abstract class ArrayHelper {
 	 * of the items in the $needle array and checks for the existance of each of the
 	 * values in $haystack.
 	 *
-	 * @param mixed $needle
-	 * @param array $haystack
+	 * @param  mixed $needle
+	 * @param  array $haystack
 	 * @return boolean
 	 */
 	static public function contains( $needle, array $haystack )
@@ -440,6 +440,24 @@ abstract class ArrayHelper {
 		{
 			return in_array( $needle, $haystack );
 		}
+	}
+
+	/**
+	 * Returns a value for a specified array key and deletes the key.
+	 *
+	 * @param  array $arr
+	 * @param  string $path
+	 * @param  mixed $default
+	 * @param  string $delimiter
+	 * @return mixed
+	 */
+	public static function extract( &$arr, $path, $default = NULL, $delimiter = '.'  )
+	{
+		$value = static::get( $arr, $path, $default, $delimiter );
+
+		static::delete( $arr, $path, $delimiter );
+
+		return $value;
 	}
 
 }
