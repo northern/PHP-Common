@@ -157,3 +157,18 @@ $b = Arr::contains( array('A', 'B'), array('A', 'B', 'C') );
 // $b = TRUE
 ```
 The above tests if the values of the first array (needle) exist in the second array (haystack), which in the above example is true.
+
+### extract
+
+Returns a value from an array and deletes the key in the array.
+```PHP
+$a = array(
+   'foo' => 'bar'
+);
+
+$value = Arr::extract( $a, 'foo' );
+
+// $value == 'bar'
+// $a = array()
+```
+The above example returns the value for `foo` from the array and deletes the `foo` key from the array.

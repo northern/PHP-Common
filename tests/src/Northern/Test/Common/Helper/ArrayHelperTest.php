@@ -345,6 +345,20 @@ class ArrayHelperTest extends \PHPUnit_Framework_TestCase {
 		$this->assertFalse( $value );
 	}
 
+	public function testExtract()
+	{
+		$data = $this->getTestData();
+
+		$value = Arr::exists( $data, 'foo.bar.baz' );
+		$this->assertTrue( $value );
+
+		$value = Arr::extract( $data, 'foo.bar.baz' );
+		$this->assertTrue( $value === self::VALUE_A );
+
+		$value = Arr::exists( $data, 'foo.bar.baz' );
+		$this->assertFalse( $value );
+	}
+
 	public function getTestData()
 	{
 		$data = array(
