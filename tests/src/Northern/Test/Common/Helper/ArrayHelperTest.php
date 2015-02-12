@@ -180,6 +180,28 @@ class ArrayHelperTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals( '$3', $data[2] );
 	}
 	
+	public function testPrefix()
+	{
+		$data = array('param1', 'param2', 'param3');
+		
+		$values = Arr::prefix( $data, '&' );
+		
+		$this->assertEquals( '&param1', $values[0] );
+		$this->assertEquals( '&param2', $values[1] );
+		$this->assertEquals( '&param3', $values[2] );
+	}
+	
+	public function testPostfix()
+	{
+		$data = array('param1', 'param2', 'param3');
+		
+		$values = Arr::postfix( $data, '&' );
+		
+		$this->assertEquals( 'param1&', $values[0] );
+		$this->assertEquals( 'param2&', $values[1] );
+		$this->assertEquals( 'param3&', $values[2] );
+	}
+	
 	public function testFlatten()
 	{
 		$data = array('param1' => 'foo', 'param2' => 'bar', 'param3' => 'baz');
