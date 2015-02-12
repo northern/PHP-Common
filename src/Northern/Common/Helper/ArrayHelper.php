@@ -233,6 +233,22 @@ abstract class ArrayHelper {
 	}
 	
 	/**
+	 * This method will postfix all values of a specified array with a given value.
+	 * 
+	 * @param array  $values
+	 * @param string $postfix
+	 */
+	static public function postfix( &$values, $postfix )
+	{
+		foreach( $values as &$value )
+		{
+			$value = "{$value}{$postfix}";
+		}
+		
+		return $values;
+	}
+	
+	/**
 	 * This method 'flattens' an associative array to a list array. The key/value
 	 * pair of the associative array are combined with $glue.
 	 * 

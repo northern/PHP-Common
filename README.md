@@ -88,11 +88,11 @@ Arr::delete( $a, 'foo.bar.baz' );
 ```    
 Or to delete multiple paths or keys at once:
 ```PHP
-Arr::delete( $a, array('fum', 'foo.bar.baz', foo.bar.bob') );
+Arr::delete( $a, array('fum', 'foo.bar.baz', 'foo.bar.bob') );
 ```
 Or with an alternate delimiter:
 ```PHP
-Arr::delete( $a, array('fum', 'foo/bar/baz', foo/bar/bob'), '/' );
+Arr::delete( $a, array('fum', 'foo/bar/baz', 'foo/bar/bob'), '/' );
 ```
 ### exists
 
@@ -111,6 +111,16 @@ $a = array('1', '2', '3');
 $values = Arr::prefix( $a, '$' );
 
 // $values = array('$1', '$2', '$3');
+```
+### postfix
+
+If you need to postfix all the values in an array, use the `postfix` method:
+```PHP
+$a = array('1', '2', '3');
+
+$values = Arr::postfix( $a, '$' );
+
+// $values = array('1$', '2$', '3$');
 ```
 ### flatten
 
