@@ -73,6 +73,32 @@ class ArrayHelperTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals( 123, $value );		
 	}
 	
+	public function testSetArrayExisting()
+	{
+		$data = array(
+			'foo' => 321,
+		);
+		
+		Arr::set( $data, 'foo', 123 );
+		$this->assertEquals( 123, $data['foo'] );
+	}
+	
+	public function testSetArrayPathExisting()
+	{
+		$data = array(
+			'foo' => array(
+				'bar' => array(
+					'baz' => 321,
+				)
+			)
+		);
+		
+		Arr::set( $data, 'foo.bar.baz', 123 );
+		
+		$value = Arr::get( $data, 'foo.bar.baz' );
+		$this->assertEquals( 123, $value );		
+	}
+	
 	public function testInsertArrayPath()
 	{
 		$data = $this->getTestData();
