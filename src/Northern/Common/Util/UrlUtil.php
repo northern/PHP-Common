@@ -13,9 +13,9 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Northern\Common\Helper;
+namespace Northern\Common\Util;
 
-class UrlHelper {
+class UrlUtil {
 
 	/**
 	 * Transforms a given string into a URL safe "slug".

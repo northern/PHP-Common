@@ -13,11 +13,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Northern\Common\Helper;
+namespace Northern\Common\Util;
 
 use Symfony\Component\Validator\ValidatorBuilder;
 
-class ObjectHelper {
+class ObjectUtil {
 
 	/**
 	 * This method applies a given set of values to a given object.

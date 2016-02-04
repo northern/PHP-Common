@@ -1,10 +1,10 @@
 <?php 
 
-namespace Northern\Test\Common\Helper;
+namespace Northern\Test\Common\Util;
 
-use Northern\Common\Helper\ArrayHelper as Arr;
+use Northern\Common\Util\ArrayUtil as Arr;
 
-class ArrayHelperTest extends \PHPUnit_Framework_TestCase {
+class ArrayUtilTest extends \PHPUnit_Framework_TestCase {
 	
 	const VALUE_A = 666;
 	const VALUE_B = 777;
@@ -66,6 +66,32 @@ class ArrayHelperTest extends \PHPUnit_Framework_TestCase {
 	public function testSetArrayPath()
 	{
 		$data = array();
+		
+		Arr::set( $data, 'foo.bar.baz', 123 );
+		
+		$value = Arr::get( $data, 'foo.bar.baz' );
+		$this->assertEquals( 123, $value );		
+	}
+	
+	public function testSetArrayExisting()
+	{
+		$data = array(
+			'foo' => 321,
+		);
+		
+		Arr::set( $data, 'foo', 123 );
+		$this->assertEquals( 123, $data['foo'] );
+	}
+	
+	public function testSetArrayPathExisting()
+	{
+		$data = array(
+			'foo' => array(
+				'bar' => array(
+					'baz' => 321,
+				)
+			)
+		);
 		
 		Arr::set( $data, 'foo.bar.baz', 123 );
 		
