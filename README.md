@@ -12,11 +12,11 @@ To run tests use:
 
 Find PHP Common on [Packagist](https://packagist.org/packages/northern/common):
 
-## ArrayHelper
+## ArrayUtil
 
-To use `ArrayHelper` you need to import it.
+To use `ArrayUtil` you need to import it.
 ```PHP
-use Northern\Common\Helper\ArrayHelper as Arr;
+use Northern\Common\Util\ArrayUtil as Arr;
 ```
 ### get
 
