@@ -1,10 +1,10 @@
 <?php 
 
-namespace Northern\Test\Common\Helper;
+namespace Northern\Test\Common\Util;
 
-use Northern\Common\Helper\ArrayHelper as Arr;
+use Northern\Common\Util\ArrayUtil as Arr;
 
-class ArrayHelperTest extends \PHPUnit_Framework_TestCase {
+class ArrayUtilTest extends \PHPUnit_Framework_TestCase {
 	
 	const VALUE_A = 666;
 	const VALUE_B = 777;

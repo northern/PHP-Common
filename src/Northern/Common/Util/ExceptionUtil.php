@@ -1,8 +1,8 @@
 <?php 
 
-namespace Northern\Common\Helper;
+namespace Northern\Common\Util;
 
-class ExceptionHelper {
+class ExceptionUtil {
 	
 	/**
 	 * Returns a formatted string containing the class names of the exeptions thrown.

@@ -1,8 +1,8 @@
 <?php 
 
-namespace Northern\Test\Common\Helper;
+namespace Northern\Test\Common\Util;
 
-use Northern\Common\Helper\ObjectHelper as Obj;
+use Northern\Common\Util\ObjectUtil as Obj;
 
 class SimpleApplyTestObject {
 
@@ -69,7 +69,7 @@ class CollectionApplyTestObject {
 
 }
 
-class ObjectHelperApplyTest extends \PHPUnit_Framework_TestCase {
+class ObjectUtilApplyTest extends \PHPUnit_Framework_TestCase {
 
 	public function testSimpleObject()
 	{

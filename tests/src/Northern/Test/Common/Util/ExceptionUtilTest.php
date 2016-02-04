@@ -1,10 +1,10 @@
 <?php 
 
-namespace Northern\Test\Common\Helper;
+namespace Northern\Test\Common\Util;
 
-use Northern\Common\Helper\ExceptionHelper;
+use Northern\Common\Util\ExceptionUtil;
 
-class ExceptionHelperTest extends \PHPUnit_Framework_TestCase {
+class ExceptionUtilTest extends \PHPUnit_Framework_TestCase {
 	
 	public function testGetExceptionNameHierarchy()
 	{
@@ -16,7 +16,7 @@ class ExceptionHelperTest extends \PHPUnit_Framework_TestCase {
 		{
 			$this->assertEquals("Division by zero", $e->getMessage() );
 
-			$exceptionNameHierarchy = ExceptionHelper::getExceptionNameHierarchy( $e );
+			$exceptionNameHierarchy = ExceptionUtil::getExceptionNameHierarchy( $e );
 
 			$this->assertEquals("PHPUnit_Framework_Error_Warning", $exceptionNameHierarchy );
 		}
@@ -32,7 +32,7 @@ class ExceptionHelperTest extends \PHPUnit_Framework_TestCase {
 		{
 			$this->assertEquals("Division by zero", $e->getMessage() );
 
-			$exceptionNameHierarchy = ExceptionHelper::getFormattedExceptionMessage( $e );
+			$exceptionNameHierarchy = ExceptionUtil::getFormattedExceptionMessage( $e );
 		}
 	}
 
@@ -46,7 +46,7 @@ class ExceptionHelperTest extends \PHPUnit_Framework_TestCase {
 		{
 			$this->assertEquals("Division by zero", $e->getMessage() );
 
-			$exceptionNameHierarchy = ExceptionHelper::getOriginalExceptionFileAndLineNumber( $e );
+			$exceptionNameHierarchy = ExceptionUtil::getOriginalExceptionFileAndLineNumber( $e );
 		}
 	}
 

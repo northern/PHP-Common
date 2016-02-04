@@ -1,10 +1,10 @@
 <?php 
 
-namespace Northern\Test\Common\Helper;
+namespace Northern\Test\Common\Util;
 
-use Northern\Common\Helper\UrlHelper as Url;
+use Northern\Common\Util\UrlUtil as Url;
 
-class UrlHelperTest extends \PHPUnit_Framework_TestCase {
+class UrlUtilTest extends \PHPUnit_Framework_TestCase {
 
 	public function testUsername()
 	{

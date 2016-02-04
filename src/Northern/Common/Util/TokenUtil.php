@@ -15,12 +15,12 @@
  * Portions copyrighted by Kohana team.
  */
 
-namespace Northern\Common\Helper;
+namespace Northern\Common\Util;
 
 /**
- * A token helper to generate application specific tokens.
+ * Token util to generate application specific tokens.
  */
-class TokenHelper {
+class TokenUtil {
 	
 	/**
 	 * This method will generate a pseudo random SHA1 that can be used as nonce or

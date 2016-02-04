@@ -1,9 +1,9 @@
 <?php 
 
-namespace Northern\Test\Common\Helper;
+namespace Northern\Test\Common\Util;
 
-use Northern\Common\Helper\ArrayHelper as Arr;
-use Northern\Common\Helper\ObjectHelper as Obj;
+use Northern\Common\Util\ArrayUtil as Arr;
+use Northern\Common\Util\ObjectUtil as Obj;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -47,7 +47,7 @@ class SimpleValidationTestObject {
 
 }
 
-class ObjectHelperValidateTest extends \PHPUnit_Framework_TestCase {
+class ObjectUtilValidateTest extends \PHPUnit_Framework_TestCase {
 
 	public function testSimpleValidate()
 	{

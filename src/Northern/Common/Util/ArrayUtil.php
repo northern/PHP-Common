@@ -15,12 +15,12 @@
  * Portions copyrighted by Kohana team.
  */
 
-namespace Northern\Common\Helper;
+namespace Northern\Common\Util;
 
 /**
- * Array helper functionality.
+ * Array util functionality.
  */
-abstract class ArrayHelper {
+abstract class ArrayUtil {
 
 	/**
 	 * Returns the value from an array by specifying its key or path for a
