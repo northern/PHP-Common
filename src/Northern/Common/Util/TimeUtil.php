@@ -38,7 +38,7 @@ class TimeUtil {
 	 */
 	public static function getByNextMinute( $time )
 	{
-		return Time::getByMinute( $time ) + 60;
+		return TimeUtil::getByMinute( $time ) + 60;
 	}
 
 	/**
@@ -50,7 +50,7 @@ class TimeUtil {
 	 */
 	public static function getByPreviousMinute( $time )
 	{
-		return Time::getByMinute( $time ) - 60;
+		return TimeUtil::getByMinute( $time ) - 60;
 	}
 
 	/**
@@ -75,7 +75,7 @@ class TimeUtil {
 	 */
 	public static function getByNextHour( $time, $hours = 1 )
 	{
-		return Time::getByHour( $time ) + (60 * 60 * $hours);
+		return TimeUtil::getByHour( $time ) + (60 * 60 * $hours);
 	}
 
 	/**
@@ -88,7 +88,7 @@ class TimeUtil {
 	 */
 	public static function getByPreviousHour( $time, $hours = 1 )
 	{
-		return Time::getByHour( $time ) - (60 * 60 * $hours);
+		return TimeUtil::getByHour( $time ) - (60 * 60 * $hours);
 	}
 
 	/**
