@@ -407,6 +407,20 @@ class ArrayUtilTest extends \PHPUnit_Framework_TestCase {
 		$this->assertFalse( $value );
 	}
 
+	public function testCompare()
+	{
+		$data1 = $this->getTestData();
+		$data2 = $this->getTestData();
+
+		$value = Arr::compare( $data1, $data2 );
+		$this->assertTrue( $value );
+
+		$data2 = array_reverse( $data1, TRUE );
+
+		$value = Arr::compare( $data1, $data2 );
+		$this->assertFalse( $value );
+	}
+
 	public function getTestData()
 	{
 		$data = array(
@@ -421,5 +435,5 @@ class ArrayUtilTest extends \PHPUnit_Framework_TestCase {
 		
 		return $data;
 	}
-		
+
 }

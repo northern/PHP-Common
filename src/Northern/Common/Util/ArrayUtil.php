@@ -426,10 +426,10 @@ abstract class ArrayUtil {
 	}
 
 	/**
-	 * This method tests for the existance of $needle in $haystack. If $needle is a
+	 * This method tests for the existence of $needle in $haystack. If $needle is a
 	 * non-array type this method will function exaclty like the build in PHP in_array
 	 * function, however, if $needle is an array this method will iterate over each
-	 * of the items in the $needle array and checks for the existance of each of the
+	 * of the items in the $needle array and checks for the existence of each of the
 	 * values in $haystack.
 	 *
 	 * @param  mixed $needle
@@ -467,13 +467,26 @@ abstract class ArrayUtil {
 	 * @param  string $delimiter
 	 * @return mixed
 	 */
-	public static function extract( &$arr, $path, $default = NULL, $delimiter = '.'  )
+	public static function extract( array &$arr, $path, $default = NULL, $delimiter = '.'  )
 	{
 		$value = static::get( $arr, $path, $default, $delimiter );
 
 		static::delete( $arr, $path, $delimiter );
 
 		return $value;
+	}
+
+	/**
+	 * Performs a "deep" compare on two given arrays. This method returns TRUE if both
+	 * arrays are exactly the same, otherwise this method will return FALSE.
+	 *
+	 * @param array $a
+	 * @param array $b
+	 * @return boolean
+	 */
+	public static function compare( array $a, array $b )
+	{
+		return serialize($a) === serialize($b);
 	}
 
 }
