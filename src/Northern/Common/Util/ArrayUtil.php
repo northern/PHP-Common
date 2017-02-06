@@ -111,6 +111,28 @@ abstract class ArrayUtil
     }
 
     /**
+     * Adds a key/value to an existing array attribute. If the attribute does not already
+     * exists it will be created.
+     *
+     * @param array  $arr
+     * @param string $path
+     * @param mixed  $value
+     * @param string $delimiter
+     */
+    public static function add(&$arr, $path, array $values, $delimiter = '.')
+    {
+        if (static::exists($arr, $path, $delimiter)) {
+            $attr = static::get($arr, $path, $delimiter);
+
+            foreach ($values as $key => $value) {
+                static::set($arr, "{$path}{$delimiter}{$key}", $value);
+            }
+        } else {
+            static::set($arr, $path, $values, $delimiter);
+        }
+    }
+
+    /**
      * Inserts a new value into a key or path only if the key or path does not yet
      * exists.
      *
