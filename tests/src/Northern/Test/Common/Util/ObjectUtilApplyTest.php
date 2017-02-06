@@ -1,126 +1,121 @@
-<?php 
+<?php
 
 namespace Northern\Test\Common\Util;
 
 use Northern\Common\Util\ObjectUtil as Obj;
 
-class SimpleApplyTestObject {
+class SimpleApplyTestObject
+{
+    protected $someProperty;
 
-	protected $someProperty;
+    public function setSomeProperty($value)
+    {
+        $this->someProperty = $value;
+    }
 
-	public function setSomeProperty( $value )
-	{
-		$this->someProperty = $value;
-	}
-
-	public function getSomeProperty()
-	{
-		return $this->someProperty;
-	}
-
+    public function getSomeProperty()
+    {
+        return $this->someProperty;
+    }
 }
 
-class ComplexApplyTestObject {
+class ComplexApplyTestObject
+{
+    protected $simpleProperty;
 
-	protected $simpleProperty;
+    protected $simpleObject;
 
-	protected $simpleObject;
+    public function __construct()
+    {
+        $this->simpleObject = new SimpleApplyTestObject();
+    }
 
-	public function __construct()
-	{
-		$this->simpleObject = new SimpleApplyTestObject();
-	}
+    public function setSimpleProperty($value)
+    {
+        $this->simpleProperty = $value;
+    }
 
-	public function setSimpleProperty( $value )
-	{
-		$this->simpleProperty = $value;
-	}
+    public function getSimpleProperty()
+    {
+        return $this->simpleProperty;
+    }
 
-	public function getSimpleProperty()
-	{
-		return $this->simpleProperty;
-	}
-
-	public function getSimpleObject()
-	{
-		return $this->simpleObject;
-	}
-
+    public function getSimpleObject()
+    {
+        return $this->simpleObject;
+    }
 }
 
-class CollectionApplyTestObject {
+class CollectionApplyTestObject
+{
+    protected $someCollection;
 
-	protected $someCollection;
+    public function __construct()
+    {
+        $this->someCollection = array();
+    }
 
-	public function __construct()
-	{
-		$this->someCollection = array();
-	}
+    public function addSomeCollection($value)
+    {
+        $this->someCollection[] = $value;
+    }
 
-	public function addSomeCollection( $value )
-	{
-		$this->someCollection[] = $value;
-	}
-
-	public function getSomeCollection()
-	{
-		return $this->someCollection;
-	}
-
+    public function getSomeCollection()
+    {
+        return $this->someCollection;
+    }
 }
 
-class ObjectUtilApplyTest extends \PHPUnit_Framework_TestCase {
+class ObjectUtilApplyTest extends \PHPUnit_Framework_TestCase
+{
+    public function testSimpleObject()
+    {
+        $simpleObject = new SimpleApplyTestObject();
 
-	public function testSimpleObject()
-	{
-		$simpleObject = new SimpleApplyTestObject();
+        $values = array(
+            'someProperty' => 123,
+        );
 
-		$values = array(
-			'someProperty' => 123,
-		);
+        Obj::apply($simpleObject, $values);
 
-		Obj::apply( $simpleObject, $values );
+        $someProperty = $simpleObject->getSomeProperty();
+        $this->assertEquals($someProperty, 123);
+    }
 
-		$someProperty = $simpleObject->getSomeProperty();
-		$this->assertEquals( $someProperty, 123 );
-	}
+    public function testComplexObject()
+    {
+        $complexObject = new ComplexApplyTestObject();
 
-	public function testComplexObject()
-	{
-		$complexObject = new ComplexApplyTestObject();
+        $values = array(
+            'simpleProperty' => 'abc',
+            'simpleObject' => array(
+                'someProperty' => 123,
+            ),
+        );
 
-		$values = array(
-			'simpleProperty' => 'abc',
-			'simpleObject' => array(
-				'someProperty' => 123,
-			),
-		);
+        Obj::apply($complexObject, $values);
 
-		Obj::apply( $complexObject, $values );
+        $simpleProperty = $complexObject->getSimpleProperty();
+        $this->assertEquals($simpleProperty, 'abc');
 
-		$simpleProperty = $complexObject->getSimpleProperty();
-		$this->assertEquals( $simpleProperty, 'abc');
+        $someProperty = $complexObject->getSimpleObject()->getSomeProperty();
+        $this->assertEquals($someProperty, 123);
+    }
 
-		$someProperty = $complexObject->getSimpleObject()->getSomeProperty();
-		$this->assertEquals( $someProperty, 123);
-	}
+    public function testCollectionObject()
+    {
+        $collectionObject = new CollectionApplyTestObject();
 
-	public function testCollectionObject()
-	{
-		$collectionObject = new CollectionApplyTestObject();
+        $values = array(
+            'someCollection' => array( 0, 1, 2, 3, 4, 5, 6, 7, 8, 9),
+        );
 
-		$values = array(
-			'someCollection' => array( 0, 1, 2, 3, 4, 5, 6, 7, 8, 9),
-		);
+        Obj::apply($collectionObject, $values);
 
-		Obj::apply( $collectionObject, $values );
+        $collection = $collectionObject->getSomeCollection();
 
-		$collection = $collectionObject->getSomeCollection();
-
-		for( $i = 0; $i < 10; $i++ )
-		{
-			$this->assertEquals( $collection[$i], $i );
-		}
-	}
-
+        for ($i = 0; $i < 10; $i++) {
+            $this->assertEquals($collection[$i], $i);
+        }
+    }
 }
