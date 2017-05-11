@@ -1,6 +1,8 @@
 .buildpath
 .project
 .settings
+.vagrant
+*.log
 vendor
 reports
 build
