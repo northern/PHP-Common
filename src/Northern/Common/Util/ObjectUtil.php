@@ -20,6 +20,69 @@ use Symfony\Component\Validator\ValidatorBuilder;
 class ObjectUtil
 {
     /**
+     * Returns the property value from an object by specifying its key, or path for a
+     * nested key. By default, the path delimiter is a . (dot) but an alernate path
+     * delimiter can be specified.
+     *
+     * @param  object $obj
+     * @param  string $path
+     * @param  mixed  $default
+     * @param  string $delimiter
+     * @return mixed
+     */    
+    public static function get(&$obj, $path, $default = null, $delimiter = '.')
+    {
+        if (empty($obj)) {
+            return $default;
+        }
+
+        $segments = explode($delimiter, $path);
+
+        $cur = $obj;
+
+        foreach ($segments as $segment) {
+            if (!is_object($cur) || !property_exists($cur, $segment)) {
+                return $default;
+            }
+
+            $cur = $cur->$segment;
+        }
+
+        return $cur;
+    }
+
+    public static function set(&$arr, $path, $value, $delimiter = '.')
+    {
+        $segments = explode($delimiter, $path);
+
+        if (count($segments) === 1) {
+            $arr->$path = $value;
+
+            return;
+        }
+
+        $cur = &$arr;
+
+        foreach ($segments as $segment) {
+            if (is_object($cur) && !property_exists($cur, $segment)) {
+                $cur->$segment = new \StdClass;
+            }
+
+            $cur = &$cur->$segment;
+
+            /*
+            if (is_array($cur) and ! array_key_exists($segment, $cur)) {
+                $cur[ $segment ] = array();
+            }
+
+            $cur = &$cur[ $segment ];
+            */
+        }
+
+        $cur = $value;
+    }
+
+    /**
      * This method applies a given set of values to a given object.
      *
      * The array with values supplied must be actual values of the
