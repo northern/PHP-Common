@@ -118,4 +118,10 @@ class TokenUtil
 
         return $str;
     }
+
+    public static function getRandomToken($length = 32)
+    {
+        return bin2hex(random_bytes($length));
+    }
 }
+
