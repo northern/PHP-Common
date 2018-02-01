@@ -1,7 +1,7 @@
 {
     "name": "northern/common",
     "description": "PHP Helpers.",
-    "license": "gpl",
+    "license": "GPL-2.0-only",
     "type": "library",
     "keywords": [
         "northern", "common", "helpers"
