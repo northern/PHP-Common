@@ -26,7 +26,6 @@ apt-get -y install \
   php${PHP_VERSION}-json \
   php${PHP_VERSION}-xml \
   php${PHP_VERSION}-mbstring
-  php-xdebug
 
 sed -i "s/;date timezone =/date timezone = UTC/" /etc/php/${PHP_VERSION}/apache2/php.ini
 sed -i "s/;date timezone =/date timezone = UTC/" /etc/php/${PHP_VERSION}/cli/php.ini
@@ -36,3 +35,10 @@ sed -i "s/;realpath_cache_size = 16k/realpath_cache_size = 4096k/" /etc/php/${PH
 
 sed -i "s/;realpath_cache_ttl = 120/realpath_cache_size = 7200/" /etc/php/${PHP_VERSION}/apache2/php.ini
 sed -i "s/;realpath_cache_ttl = 120/realpath_cache_size = 7200/" /etc/php/${PHP_VERSION}/cli/php.ini
+
+# Install Composer.
+php -r "readfile('https://getcomposer.org/installer');" > composer-setup.php
+php composer-setup.php
+php -r "unlink('composer-setup.php');"
+mv composer.phar /usr/bin/composer
+
